@@ -329,8 +329,9 @@ Admitted.
 Lemma SOS_corps_carre_inter n i :
   SOS (Inter (Seq corps_carre i) (invar_cc n)) (Inter i (invar_cc (S n))).
 Proof.
-  apply SOS_seq. 
-Admitted.
+  apply SOS_seq.
+  apply SOS_corps_carre.
+Qed.
 
 Lemma eqnatb_refl : forall n, eqnatb n n = true.
 Proof.
@@ -344,7 +345,13 @@ Lemma SOS_Pcarre_tour :
   forall n i, eqnatb i n = false ->
   SOS (Inter (Pcarre n) (invar_cc i)) (Inter (Pcarre n) (invar_cc (S i))).
 Proof.
-Admitted.
+  intros.
+  eapply SOS_again.
+  { apply SOS_While. }
+  eapply SOS_again.
+  { eapply SOS_If_true. cbn. rewrite H. reflexivity. }
+  apply SOS_corps_carre_inter.
+Qed.
 
 (** Facile *)
 Theorem SOS_Pcarre_n_fini : forall n, SOS (Inter (Pcarre n) (invar_cc n)) (Final (invar_cc n)).
