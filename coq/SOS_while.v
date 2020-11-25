@@ -382,7 +382,14 @@ Lemma SOS_Pcarre_inf_tour :
   forall i,
   SOS (Inter Pcarre_inf (invar_cc i)) (Inter Pcarre_inf (invar_cc (S i))).
 Proof.
-Admitted.
+  intro.
+  cbv [Pcarre_inf].
+  eapply SOS_again.
+  { apply SOS_While. }
+  eapply SOS_again.
+  { eapply SOS_If_true. reflexivity. }
+  apply SOS_corps_carre_inter.
+Qed.
 
 Theorem SOS_Pcarre_inf_n :
   forall i,
