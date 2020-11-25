@@ -356,7 +356,15 @@ Qed.
 (** Facile *)
 Theorem SOS_Pcarre_n_fini : forall n, SOS (Inter (Pcarre n) (invar_cc n)) (Final (invar_cc n)).
 Proof.
-Admitted.
+  intros.
+  eapply SOS_again.
+  { eapply SOS_While. }
+  eapply SOS_again.
+  { eapply SOS_If_false. cbn. rewrite eqnatb_refl. reflexivity. }
+  eapply SOS_again.
+  { apply SOS_Skip. }
+  apply SOS_stop.
+Qed.
 
 Theorem SOS_Pcarre_2_fin_V2 : SOS (Inter Pcarre_2 [0;0;1]) (Final [2;4;5]).
 Proof.
