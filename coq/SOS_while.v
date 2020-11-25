@@ -301,7 +301,23 @@ Proof. ring. Qed.
 Definition invar_cc n := [n; n*n; S (n+n)].
 Theorem SOS_corps_carre n : SOS (Inter corps_carre (invar_cc n)) (Final (invar_cc (S n))).
 Proof.
-Admitted.
+  induction n as [].
+    - eapply SOS_again.
+      { cbv. eapply SOS_Seqf. apply SOS_Assign. }
+      eapply SOS_again.
+      { eapply SOS_Seqf. cbn. apply SOS_Assign. }
+      eapply SOS_again.
+      { apply SOS_Assign. }
+      cbn. cbv. apply SOS_stop.
+    - eapply SOS_again.
+      { eapply SOS_Seqf. apply SOS_Assign. }
+      eapply SOS_again.
+      { eapply SOS_Seqf. cbn. apply SOS_Assign. }
+      eapply SOS_again.
+      { apply SOS_Assign. }
+      cbn. cbv[invar_cc]. rewrite Sn_2. rewrite Sn_carre.
+      apply SOS_stop.
+Qed.
 
 (** Celui-ci est court mais difficile. Laisser Admitted au début. *)
 Fixpoint SOS_seq i1 i2 s1 s2 (so : SOS (Inter i1 s1) (Final s2)) :
