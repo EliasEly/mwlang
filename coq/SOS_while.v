@@ -243,25 +243,51 @@ Qed.
 (** Propriété essentielle de SOS, qui a un intérêt pratique. *)
 Theorem SOS_trans : forall c1 c2 c3, SOS c1 c2 -> SOS c2 c3 -> SOS c1 c3.
 Proof.
-  intro c1.
-
-Admitted.
+  intros c1 c2 c3 sos sos2.
+    induction sos as [ (*SOS_Stop*) | (*SOS_Again*) ii s cc1 cc2 cc3 sos12 sos23].
+      * apply sos2.
+      * eapply SOS_again.
+        + apply cc3.
+        + apply sos23. apply sos2.
+Qed.
 
 (** Il n'est pas demandé de faire celui-ci
     (bien qu'un copié-collé d'un lemme précédent fonctionne). *)
 Lemma SOS_Pcarre_2_2e_tour : SOS (Inter Pcarre_2 [1; 1; 3]) (Inter Pcarre_2 [2; 4; 5]).
 Proof.
-Admitted.
+  eapply SOS_again. cbv.
+  { apply SOS_While. }
+  eapply SOS_again.
+  { apply SOS_If_true. reflexivity. }
+  eapply SOS_again.
+  { apply SOS_Seqi. apply SOS_Seqf. eapply SOS_Assign. }
+  eapply SOS_again.
+  { apply SOS_Seqi. apply SOS_Seqf. eapply SOS_Assign. }
+  eapply SOS_again.
+  { apply SOS_Seqf. apply SOS_Assign. }
+  eapply SOS_stop.
+Qed.
 
 Theorem SOS_Pcarre_2_fini : SOS (Inter Pcarre_2 [2; 4; 5]) (Final [2; 4; 5]).
 Proof.
-Admitted.
+  eapply SOS_again. cbv.
+  { eapply SOS_While. }
+  eapply SOS_again.
+  { eapply SOS_If_false. reflexivity. }
+  eapply SOS_again.
+  { eapply SOS_Skip. }
+  eapply SOS_stop.
+Qed.
 
 (** Même énoncé que SOS_Pcarre_2_V0. Utiliser SOS_trans *)
 Theorem SOS_Pcarre_2_fin_V1 : SOS (Inter Pcarre_2 [0;0;1]) (Final [2;4;5]).
 Proof.
   apply SOS_trans with (Inter Pcarre_2 [1; 1; 3]).
-Admitted.
+    + apply SOS_Pcarre_2_1er_tour. 
+    + apply SOS_trans with (Inter Pcarre_2 [2; 4; 5]).
+      * apply SOS_Pcarre_2_2e_tour. 
+      * apply SOS_Pcarre_2_fini.
+Qed.
 
 (** Généralisation à Pcarre *)
 
