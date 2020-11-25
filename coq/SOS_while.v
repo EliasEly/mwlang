@@ -334,7 +334,10 @@ Admitted.
 
 Lemma eqnatb_refl : forall n, eqnatb n n = true.
 Proof.
-Admitted.
+  induction n as [].
+    - cbn. reflexivity.
+    - cbn. apply IHn.
+Qed.
 
 (** Réutiliser les lemmes précédents (facile). *)
 Lemma SOS_Pcarre_tour :
