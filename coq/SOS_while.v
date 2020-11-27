@@ -395,7 +395,14 @@ Theorem SOS_Pcarre_inf_n :
   forall i,
   SOS (Inter Pcarre_inf [0; 0; 1]) (Inter Pcarre_inf (invar_cc i)).
 Proof.
-Admitted.
+  intro.
+  cbv [Pcarre_inf]. cbv [invar_cc].
+  induction i as [].
+  - apply SOS_stop.
+  - cbn. eapply SOS_trans.
+    * eapply IHi.
+    * apply SOS_Pcarre_inf_tour.
+Qed.
 
 (** Énoncer et démontrer le théorème général pour Pcarre *)
 
@@ -407,7 +414,13 @@ Admitted.
 
 (** Définir une version fonctionnelle de SOS_1 *)
 Fixpoint f_SOS_1 (i : Winstr) (s : state) : config.
-Admitted.
+  match i with 
+  | Skip => 
+  | Assign x a => 
+  | Seq i1 i2 =>
+  | If b i1 i2 =>
+  | While b i => 
+  end.
 
 (** Court mais non trivial. *)
 Lemma f_SOS_1_corr : forall i s, SOS_1 i s (f_SOS_1 i s).
