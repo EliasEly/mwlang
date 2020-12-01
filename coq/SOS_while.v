@@ -3,6 +3,8 @@
 
 
 (* On importe les bibliothèques de Coq utiles pour le TD   *)
+
+Require Extraction.
 Require Import Bool Arith List.
 Import List.ListNotations.
 
@@ -44,7 +46,6 @@ Inductive Winstr :=
 (** ** États *)
 
 Definition state := list nat.
-
 
 Fixpoint get (x:nat) (s:state) : nat :=
 match x,s with
@@ -411,19 +412,36 @@ Qed.
 
 
 (** Définir une version fonctionnelle de SOS_1 *)
-Fixpoint f_SOS_1 (i : Winstr) (s : state) : config.
+Fixpoint f_SOS_1 (i : Winstr) (s : state) : config :=
   match i with 
-  | Skip => 
-  | Assign x a => 
-  | Seq i1 i2 =>
-  | If b i1 i2 =>
-  | While b i => 
+  | Skip => Final s
+  | Assign x a =>  Final (update s x (evalA a s))
+  | Seq i1 i2 => match f_SOS_1 i1 s with
+                  | Inter i_bis s_bis => Inter (Seq i_bis i2) s_bis
+                  | Final s => Inter i2 s
+                  end
+  | If b i1 i2 => match evalB b s with
+                  | true => Inter i1 s
+                  | false => Inter i2 s
+                  end
+  | While b i => Inter (If b (Seq i (While b i)) Skip) s
   end.
 
 (** Court mais non trivial. *)
 Lemma f_SOS_1_corr : forall i s, SOS_1 i s (f_SOS_1 i s).
 Proof.
-Admitted.
+  intros.
+  induction i as [].
+  - cbn. apply SOS_Skip.
+  - cbn. apply SOS_Assign.
+  - cbn. destruct (f_SOS_1 i1 s) as [].
+    * apply SOS_Seqi. apply IHi1.
+    * apply SOS_Seqf. apply IHi1.
+  - cbn. case_eq(evalB b s).
+    * intro. apply SOS_If_true. apply H.
+    * intro. apply SOS_If_false. apply H.
+  - cbn. apply SOS_While.  
+Qed.
 
 (** Court. Attention : utiliser la tactique injection. *)
 Lemma f_SOS_1_compl : forall i s c, SOS_1 i s c -> c = f_SOS_1 i s.
