@@ -1,2 +1,3 @@
 *.pdf
 *.v#
+.DS_Store
