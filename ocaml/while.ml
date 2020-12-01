@@ -135,29 +135,41 @@ let p_Cst : mwhile =
 
 let p_Affectation : mwhile =
   fun l -> (
+      (p_Blanc)
+    +>
       (p_Var)
     +>
-      (p_Blanc +| epsilon)
+      (p_Blanc)
     +>
       (terminal ':')
     +>
-      (p_Blanc +| epsilon)
+      (p_Blanc)
     +> 
       (terminal '=')
     +>
-      (p_Blanc +| epsilon)
+      (p_Blanc)
     +>
       (term_0 +| term_1 +| term_a +| term_b +| term_c +| term_d)
+    +>
+      (p_Blanc)  
   ) l;;
 
  
 let rec p_S : mwhile = 
-  let p_L l = ((term_eol +> p_S) +| epsilon) l
-  and p_I l =  ( p_Affectation 
-               +| (term_w +> term_pg +> (p_Var +| p_Cst) +> term_pd +> term_ag +> p_S +> term_ad) 
-               +| (term_if +> term_pg +> (p_Var +| p_Cst) +> term_pd +> term_ag +> p_S +> term_ad +> term_ag +> p_S +> term_ad) 
+  let p_L l = ((term_eol +> p_Blanc +> p_S) +| epsilon) l
+  and p_I l =  (p_Affectation 
+               +| (term_w +> p_Blanc
+                  +> term_pg +> p_Blanc +> (p_Var +| p_Cst) +> p_Blanc +> term_pd +> p_Blanc
+                  +> term_ag +> p_Blanc +> p_S +> p_Blanc +> term_ad) 
+               +| (term_if +> p_Blanc
+                  +> 
+                  term_pg +> p_Blanc +> (p_Var +| p_Cst) +> p_Blanc +> term_pd +> p_Blanc 
+                  +> 
+                  term_ag +> p_Blanc +> p_S +> term_ad +> p_Blanc 
+                  +> 
+                  term_ag +> p_Blanc +> p_S +> term_ad) 
                +| epsilon) l
-  in fun l -> ((p_I +> p_L) +| epsilon) l
+  in fun l -> ((p_I +> p_L)+| epsilon) l
   
   
 let t1 = list_of_string "a:=1;";;
@@ -166,7 +178,7 @@ let _ = p_S t1;;
 let t2 = list_of_string "a:=1;b:=1;w(a){b:=1}";;
 let _ = p_S t2;;
 
-let t3 = list_of_string "a:=1;b:=1;i(1){b:=1}{c:=0}";;
+let t3 = list_of_string "  a:=1;b:=1;i(1){b:=1}{c:=0}";;
 let res = p_S t3;;
 
 let t4 = list_of_string "i(1){b:=a}{c:=0}";;
