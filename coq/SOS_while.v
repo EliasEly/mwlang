@@ -446,6 +446,8 @@ Qed.
 (** Court. Attention : utiliser la tactique injection. *)
 Lemma f_SOS_1_compl : forall i s c, SOS_1 i s c -> c = f_SOS_1 i s.
 Proof.
+  intros i s.
+  induction i as [].
 Admitted.
 
 
