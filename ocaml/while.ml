@@ -194,3 +194,29 @@ isWhileLanguage t1;;
 isWhileLanguage t2;;
 isWhileLanguage t3;;
 isWhileLanguage t4;;
+
+let init n  =
+  let rec aux n s =
+  match n with
+  | 0 -> s
+  | n -> aux (n-1) (0::s) in
+  aux n [];;
+
+let rec get x s = 
+  match x with
+  | 0 -> (match s with
+	        | [] -> 0
+          | v::_ -> v)
+  | x -> (match s with
+          | [] -> 0
+          | _::l -> get (x-1) l);;
+
+let rec update s v n =
+  match v with
+  | 0 -> (match s with
+        | [] -> [n]
+        | _::l -> n::l)
+  | v ->
+    (match s with
+      | [] -> 0::(update [] (v-1) n)
+      | a::l -> a::(update l (v-1) n));;

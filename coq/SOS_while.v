@@ -3,7 +3,6 @@
 
 
 (* On importe les bibliothèques de Coq utiles pour le TD   *)
-
 Require Import Bool Arith List.
 Import List.ListNotations.
 
