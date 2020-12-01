@@ -25,6 +25,9 @@ let defile f =
     match ftmp with
     | [] -> failwith "Empty list"
     | d::[] -> (d, faux)
-    | x::r -> defile_aux r (faux::x) in
+    | x::r -> defile_aux r (faux@[x]) in
   defile_aux f []
-  ;;
+;;
+
+
+  
