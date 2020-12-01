@@ -116,16 +116,11 @@ let term_ad : mwhile = terminal '}';;
 
 let epsilon =  fun l -> l;;
 
-
-let p_Affectation : mwhile =
+let rec p_Blanc : mwhile = 
   fun l -> (
-      (term_a +| term_b +| term_c +| term_d)
-    +>
-      (terminal ':')
-    +> 
-      (terminal '=')
-    +>
-      (term_0 +| term_1 +| term_a +| term_b +| term_c +| term_d)
+      ((terminal ' ') +| (terminal '\n') +| (terminal '\t') +> (p_Blanc))
+      +|
+      (epsilon)
   ) l;;
 
 let p_Var : mwhile = 
@@ -137,6 +132,24 @@ let p_Cst : mwhile =
   fun l -> (
     (term_0 +| term_1)
   ) l;;
+
+let p_Affectation : mwhile =
+  fun l -> (
+      (p_Var)
+    +>
+      (p_Blanc +| epsilon)
+    +>
+      (terminal ':')
+    +>
+      (p_Blanc +| epsilon)
+    +> 
+      (terminal '=')
+    +>
+      (p_Blanc +| epsilon)
+    +>
+      (term_0 +| term_1 +| term_a +| term_b +| term_c +| term_d)
+  ) l;;
+
  
 let rec p_S : mwhile = 
   let p_L l = ((term_eol +> p_S) +| epsilon) l
