@@ -204,12 +204,6 @@ and __if = exp * winstr * winstr
 and sequence = winstr * winstr
 and assign = var * exp;;
 
-type state = int list;;
-
-type config =
-  | Inter of winstr * state
-  | Final of state;;
-
 
 (* Type pour fonctions qui épluchent une list de terminaux *)
 type 'term analist = 'term list -> 'term list;;
@@ -342,6 +336,12 @@ let _ = p_S t4;;
 
 (* Fin de l'analyse syntaxique avec AST *) 
 
+type state = int list;;
+
+type config =
+  | Inter of winstr * state
+  | Final of state;;
+
 let init n  =
   let rec aux n s =
   match n with
@@ -367,3 +367,51 @@ let rec update s v n =
     (match s with
       | [] -> 0::(update [] (v-1) n)
       | a::l -> a::(update l (v-1) n));;    
+
+  
+let index_var = fun e ->
+  match e with
+  | V A -> 0
+  | V B -> 1
+  | V C -> 2
+  | V D -> 3
+  | _ -> raise Erreur;;
+
+let value_exp(e: exp) (s: state) : int =
+  match e with
+  | Cst Opposite -> (-1)
+  | Cst Zero -> 0
+  | Cst Un -> 1
+  | _ -> get (index_var e) s;;
+
+let eval(e: exp) (s: state) : bool =
+  match e with
+  | Cst Zero -> false
+  | Cst Un -> true
+  | Cst Opposite -> raise Erreur 
+  | _ -> let v = get (index_var e) s in if v = 1 then true else false;;
+
+
+let rec faire_un_pas = fun instr s -> 
+  match instr with
+ | Vide -> Final(s)
+ | Assign(x, v) -> Final(update s (index_var (V x)) (let v = (value_exp v s) in if v = (-1) then ((-1) * (get (index_var (V x)) s) + 1) else v))
+ | Seq(e1, e2) -> (match (faire_un_pas e1 s) with
+                  | Inter(e1_bis, s_bis) -> Inter(Seq(e1_bis, e2), s_bis)
+                  | Final(s_bis) -> Inter(e2, s_bis))
+ | If(cond, e1, e2) -> (match (eval cond s) with
+                      | true -> Inter(e1, s)
+                      | false -> Inter(e2, s))
+ | While(cond, e) -> (match (eval cond s) with
+                      | true -> Inter(e, s)
+                      | false -> Inter(Vide, s))
+;;
+
+let rec executer = fun instr s ->
+  match (faire_un_pas instr s) with
+  | Final(s) -> (true, s, instr)
+  | Inter(i1, s1) -> executer i1 s1;;
+
+let instr = let (i, _) = p_S t4 in i;; 
+let _ = faire_un_pas instr (init 4);;
+let _ = executer instr (init 4);;
