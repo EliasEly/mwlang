@@ -197,7 +197,6 @@ isWhileLanguage t4;;
 type var = A | B | C | D;;
 type const = Un | Zero | Opposite;;
 type exp = V of var | Cst of const;;
-(*type instr = V of var | E of exp | W of exp;;*)
 
 type winstr = Vide | While of __while | If of __if | Assign of assign | Seq of sequence
 and __while = exp * winstr
@@ -282,7 +281,7 @@ let p_Var : (var, char) ranalist =
 
 let p_Cst : (const, char) ranalist = 
   fun l -> (
-    (term_0 +| term_1)
+    (term_0 +| term_1 +| term_neg)
   ) l;;
 
 let p_Expression : (exp, char) ranalist =
@@ -312,21 +311,34 @@ let p_Affectation : (winstr, char) ranalist =
 
 
 let rec p_S : (winstr, char) ranalist = 
-  let p_L l = ((term_eol +> p_Blanc +> p_S) +| epsilon) l
+  let p_L l = ((term_eol +> p_Blanc +> p_S ++> fun a -> return a) +| (epsilon +> return Vide)) l
   and p_I l =  (p_Affectation 
                 +| (term_w +> p_Blanc
-                  +> term_pg +> p_Blanc +> p_Expression +> p_Blanc +> term_pd +> p_Blanc
-                  +> term_ag +> p_Blanc +> p_S +> p_Blanc +> term_ad) 
+                  +> term_pg +> p_Blanc +> p_Expression ++> fun a -> p_Blanc +> term_pd +> p_Blanc
+                  +> term_ag +> p_Blanc +> p_S ++> fun b -> p_Blanc +> term_ad +> return (While (a, b))) 
                 +| (term_if +> p_Blanc
                   +> 
-                  term_pg +> p_Blanc +> p_Expression +> p_Blanc +> term_pd +> p_Blanc 
+                  term_pg +> p_Blanc +> p_Expression ++> fun a -> p_Blanc +> term_pd +> p_Blanc 
                   +> 
-                  term_ag +> p_Blanc +> p_S +> term_ad +> p_Blanc 
+                  term_ag +> p_Blanc +> p_S ++> fun b -> term_ad +> p_Blanc 
                   +> 
-                  term_ag +> p_Blanc +> p_S +> term_ad) 
-                +| epsilon) l
-  in fun l -> ((p_I +> p_L)+| epsilon) l
+                  term_ag +> p_Blanc +> p_S ++> fun c -> term_ad +> return (If (a, b, c))) 
+                +| (epsilon +> return Vide)) l
+  in fun l -> ((p_I ++> fun a -> p_L ++> fun b -> 
+  match a, b with
+  | Vide, Vide -> return Vide
+  | x, Vide -> return x
+  | _ -> return (Seq (a, b))
+  )+| (epsilon +> return Vide)) l
 
+let t2 = list_of_string "a:=1;b:=1;w(a){b:=1}";;
+let _ = p_S t2;;
+
+let t3 = list_of_string "  a:=1;b:=1;i(1){b:=1}{c:=0}";;
+let _ = p_S t3;;
+
+let t4 = list_of_string "  a:=1;b:=1;a:=#;i(1){b:=1}{c:=0}";;
+let _ = p_S t4;;
 
 (* Fin de l'analyse syntaxique avec AST *) 
 
