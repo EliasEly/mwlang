@@ -403,7 +403,7 @@ let rec faire_un_pas = fun instr s ->
                       | true -> Inter(e1, s)
                       | false -> Inter(e2, s))
  | While(cond, e) -> (match (eval cond s) with
-                      | true -> Inter(e, s)
+                      | true -> Inter(Seq(e, While(cond, e)), s)
                       | false -> Inter(Vide, s))
 ;;
 
@@ -412,6 +412,6 @@ let rec executer = fun instr s ->
   | Final(s) -> (true, s, instr)
   | Inter(i1, s1) -> executer i1 s1;;
 
-let instr = let (i, _) = p_S t4 in i;; 
+let instr = let (i, _) = p_S t2 in i;; 
 let _ = faire_un_pas instr (init 4);;
 let _ = executer instr (init 4);;
