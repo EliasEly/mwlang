@@ -255,7 +255,7 @@ Qed.
 (** Signification de ce théorème : preuve qu'en partant de l'état intermédiaire 
     [1; 1; 3] (état de sortie du premier tour), Pcarre_2 s'exécute et mène à un 
     état intermédiaire [2; 4; 5]. 
-*)
+**)
 Lemma SOS_Pcarre_2_2e_tour : SOS (Inter Pcarre_2 [1; 1; 3]) (Inter Pcarre_2 [2; 4; 5]).
 Proof.
   eapply SOS_again. cbv.
@@ -274,7 +274,7 @@ Qed.
 (** Signification de ce théorème : preuve qu'en partant de la fin du deuxième 
     tour du programme qui rend l'état de sortie intérmédiaire [2; 4; 5], 
     Pcarre_2 arrête le programme en menant à l'état final [2;4;5]. 
-*)
+**)
 Theorem SOS_Pcarre_2_fini : SOS (Inter Pcarre_2 [2; 4; 5]) (Final [2; 4; 5]).
 Proof.
   eapply SOS_again. cbv.
@@ -357,7 +357,7 @@ Proof.
 Qed.
 
 (** Réutiliser les lemmes précédents (facile). *)
-(* Signification de ce théorème :  *)
+(** Signification de ce théorème :  **)
 Lemma SOS_Pcarre_tour :
   forall n i, eqnatb i n = false ->
   SOS (Inter (Pcarre n) (invar_cc i)) (Inter (Pcarre n) (invar_cc (S i))).
@@ -371,7 +371,7 @@ Proof.
 Qed.
 
 (** Facile *)
-(* Signification de ce théorème :  *)
+(** Signification de ce théorème :  **)
 Theorem SOS_Pcarre_n_fini : forall n, SOS (Inter (Pcarre n) (invar_cc n)) (Final (invar_cc n)).
 Proof.
   intros.
@@ -384,7 +384,7 @@ Proof.
   apply SOS_stop.
 Qed.
 
-(* Explication de la démonstration :  *)
+(** Explication de la démonstration :  **)
 Theorem SOS_Pcarre_2_fin_V2 : SOS (Inter Pcarre_2 [0;0;1]) (Final [2;4;5]).
 Proof.
   eapply SOS_trans.
@@ -415,8 +415,14 @@ Proof.
   {apply SOS_corps_carre_inter. }
 Qed.
 
-(** Signification de ce théorème : effectue un tour de programme à l'infini car 
-    la condition du while est toujours true. *)
+(** Signification de ce théorème : preuve que Pcarre_inf fait tourner le 
+    programme à l'infini à cause de la condition du While qui est toujours à 
+    true. 
+    En effet, on prouve qu'en partant d'un état intermédiaire [0; 0; 1], 
+    Pcarre_inf nous fait revenir à un état intermédiaire invar_cc i. Or, nous 
+    avons démontré dans SOS_Pcarre_inf_tour que 'Pcarre_inf (invar_cc i)' fait
+    tourner le programme à l'infini.
+    **)
 Theorem SOS_Pcarre_inf_n :
   forall i,
   SOS (Inter Pcarre_inf [0; 0; 1]) (Inter Pcarre_inf (invar_cc i)).
