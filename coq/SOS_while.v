@@ -269,6 +269,9 @@ Proof.
   eapply SOS_stop.
 Qed.
 
+(* Signification de ce théorème : preuve qu'en partant de la fin du deuxième tour du programme qui rend 
+   l'état de sortie intérmédiaire [2; 4; 5], Pcarre_2 arrête le programme en menant à l'état final [2;4;5]. 
+*)
 Theorem SOS_Pcarre_2_fini : SOS (Inter Pcarre_2 [2; 4; 5]) (Final [2; 4; 5]).
 Proof.
   eapply SOS_again. cbv.
