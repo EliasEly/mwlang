@@ -465,21 +465,6 @@ Fixpoint f_SOS_1 (i : Winstr) (s : state) : config :=
   | While b i => Inter (If b (Seq i (While b i)) Skip) s
   end.
 
-(** Court mais non trivial. *)
-Lemma f_SOS_1_corr : forall i s, SOS_1 i s (f_SOS_1 i s).
-Proof.
-  intros.
-  induction i as [].
-  - cbn. apply SOS_Skip.
-  - cbn. apply SOS_Assign.
-  - cbn. destruct (f_SOS_1 i1 s) as [].
-    * apply SOS_Seqi. apply IHi1.
-    * apply SOS_Seqf. apply IHi1.
-  - cbn. case_eq(evalB b s).
-    * intro. apply SOS_If_true. apply H.
-    * intro. apply SOS_If_false. apply H.
-  - cbn. apply SOS_While.  
-Qed.
 
 (** Définitions d'instructions qui serviront à la preuve suivante **)
 Definition i1 := (If (Bnot (Beqnat Ir (Aco 2))) (Seq corps_carre (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)) Skip).
@@ -508,6 +493,22 @@ Proof.
         -- apply SOS_again with (f_SOS_1 i4 [1;1;1]).
           ++ apply SOS_Seqf. eapply SOS_Assign.
           ++ cbn. apply SOS_stop.  
+Qed.
+
+(** Court mais non trivial. *)
+Lemma f_SOS_1_corr : forall i s, SOS_1 i s (f_SOS_1 i s).
+Proof.
+  intros.
+  induction i as [].
+  - cbn. apply SOS_Skip.
+  - cbn. apply SOS_Assign.
+  - cbn. destruct (f_SOS_1 i1 s) as [].
+    * apply SOS_Seqi. apply IHi1.
+    * apply SOS_Seqf. apply IHi1.
+  - cbn. case_eq(evalB b s).
+    * intro. apply SOS_If_true. apply H.
+    * intro. apply SOS_If_false. apply H.
+  - cbn. apply SOS_While.  
 Qed.
 
 (** Court. Attention : utiliser la tactique injection. *)

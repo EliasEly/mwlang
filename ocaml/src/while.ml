@@ -127,11 +127,10 @@ let rec p_S : (winstr, char) ranalist =
                   +> 
                   term_ag +> p_Blanc +> p_S ++> fun c -> term_ad +> return (If (a, b, c))) 
                 +| (epsilon +> return Vide)) l
-  in fun l -> ((p_I ++> fun a -> p_L ++> fun b -> 
-  match a, b with
-  | Vide, Vide -> return Vide
-  | x, Vide -> return x
-  | _ -> return (Seq (a, b))
-  )+| (epsilon +> return Vide)) l;;
+  in fun l -> ((p_I ++> fun a -> p_L ++> fun b -> match a, b with
+                                                | Vide, Vide -> return Vide
+                                                | x, Vide -> return x
+                                                | _ -> return (Seq (a, b))
+                                                )+| (epsilon +> return Vide)) l;;
 
 (* Fin de l'analyse syntaxique avec AST *) 

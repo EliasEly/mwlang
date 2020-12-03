@@ -1,3 +1,4 @@
+(*Auteur : Elias El Yandouzi & Amad Salmon*)
 open While;;
 
 type state = int list;;

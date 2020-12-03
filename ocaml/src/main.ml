@@ -1,8 +1,7 @@
+(*Auteur : Elias El Yandouzi & Amad Salmon*)
 open Config;;
 open While;;
 open Printf;;
-
-printf "Hello world!";;
 
 let t2 = list_of_string "a:=1;b:=1;w(a){b:=1}";;
 let _ = p_S t2;;

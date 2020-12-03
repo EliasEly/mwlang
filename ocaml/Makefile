@@ -13,7 +13,7 @@ EXEC:= main
 
 .PHONY: all clean
 
-all: $(EXEC)
+all: $(OBJ_DIR) $(EXEC)
 
 $(EXEC): $(OBJ_DIR)/while.cmo $(OBJ_DIR)/config.cmo $(OBJ_DIR)/main.cmo
 	$(CC) -o $@ $^
