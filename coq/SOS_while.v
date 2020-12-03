@@ -481,6 +481,14 @@ Proof.
   - cbn. apply SOS_While.  
 Qed.
 
+(** Démonstration de SOS_Pcarre_2_1er_tour cette fois-ci avec la version 
+    fonction fonctionnelle de SOS_1. 
+    Nous avons donc remplacé tous les :
+        eapply SOS_again. 
+    par des :
+        apply SOS_again with c. 
+    où c est une configuration intermédiaire que l’on peut calculer.
+    **)
 Lemma f_SOS_Pcarre_2_1er_tour : SOS (Inter Pcarre_2 [0;0;1]) (Inter Pcarre_2 [1; 1; 3]).
 Proof.
   apply SOS_again with (f_SOS_1 Pcarre_2 [0;0;1]).
