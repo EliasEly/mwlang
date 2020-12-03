@@ -3,6 +3,6 @@
 *.~
 .DS_Store
 main
-obj/
+ocaml/obj/
 *.cmo
 *.cmi
