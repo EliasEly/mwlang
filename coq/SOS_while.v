@@ -250,9 +250,11 @@ Proof.
         + apply sos23. apply sos2.
 Qed.
 
-(** Il n'est pas demandé de faire celui-ci (bien qu'un copié-collé d'un lemme précédent fonctionne). *)
-(* Signification de ce théorème : preuve qu'en partant de l'état intermédiaire [1; 1; 3] (état de sortie du premier tour),
-      Pcarre_2 s'exécute et mène à un état intermédiaire [2; 4; 5]. 
+(** Il n'est pas demandé de faire celui-ci (bien qu'un copié-collé d'un lemme 
+    précédent fonctionne). *)
+(** Signification de ce théorème : preuve qu'en partant de l'état intermédiaire 
+    [1; 1; 3] (état de sortie du premier tour), Pcarre_2 s'exécute et mène à un 
+    état intermédiaire [2; 4; 5]. 
 *)
 Lemma SOS_Pcarre_2_2e_tour : SOS (Inter Pcarre_2 [1; 1; 3]) (Inter Pcarre_2 [2; 4; 5]).
 Proof.
@@ -269,8 +271,9 @@ Proof.
   eapply SOS_stop.
 Qed.
 
-(* Signification de ce théorème : preuve qu'en partant de la fin du deuxième tour du programme qui rend 
-   l'état de sortie intérmédiaire [2; 4; 5], Pcarre_2 arrête le programme en menant à l'état final [2;4;5]. 
+(** Signification de ce théorème : preuve qu'en partant de la fin du deuxième 
+    tour du programme qui rend l'état de sortie intérmédiaire [2; 4; 5], 
+    Pcarre_2 arrête le programme en menant à l'état final [2;4;5]. 
 *)
 Theorem SOS_Pcarre_2_fini : SOS (Inter Pcarre_2 [2; 4; 5]) (Final [2; 4; 5]).
 Proof.
@@ -303,9 +306,12 @@ Lemma Sn_carre n : S n * S n = S (n + n + n * n).
 Proof. ring. Qed.
 
 Definition invar_cc n := [n; n*n; S (n+n)].
-(* Signification de ce théorème : preuve qu'en parrtant d'un état intérmédiaire de type invar_cc, 
-    corps_carre s'exécute et calcule le carré grâce aux additions en fonction de la valeur 
-    de n (0 ou un entier non-nul), et mène à un état final de type invar_cc.*)
+
+(** Signification de ce théorème : preuve qu'en parrtant d'un état intérmédiaire
+    de type invar_cc, corps_carre s'exécute et calcule le carré grâce aux 
+    additions en fonction de la valeur de n (0 ou un entier non-nul), et mène à 
+    un état final de type invar_cc. 
+    **)
 Theorem SOS_corps_carre n : SOS (Inter corps_carre (invar_cc n)) (Final (invar_cc (S n))).
 Proof.
   induction n as [].
@@ -327,12 +333,15 @@ Proof.
 Qed.
 
 (** Celui-ci est court mais difficile. Laisser Admitted au début. *)
+(* Signification de ce théorème :  *)
 Fixpoint SOS_seq i1 i2 s1 s2 (so : SOS (Inter i1 s1) (Final s2)) :
   SOS (Inter (Seq i1 i2) s1) (Inter i2 s2).
 Proof.
 Admitted.
 
 (** Réutiliser les lemmes précédents (facile et très court). *)
+(** Signification de ce théorème :  preuve qu'en partant d'un état intérmédiaire 
+    de type invar_cc, *)
 Lemma SOS_corps_carre_inter n i :
   SOS (Inter (Seq corps_carre i) (invar_cc n)) (Inter i (invar_cc (S n))).
 Proof.
@@ -348,6 +357,7 @@ Proof.
 Qed.
 
 (** Réutiliser les lemmes précédents (facile). *)
+(* Signification de ce théorème :  *)
 Lemma SOS_Pcarre_tour :
   forall n i, eqnatb i n = false ->
   SOS (Inter (Pcarre n) (invar_cc i)) (Inter (Pcarre n) (invar_cc (S i))).
@@ -361,6 +371,7 @@ Proof.
 Qed.
 
 (** Facile *)
+(* Signification de ce théorème :  *)
 Theorem SOS_Pcarre_n_fini : forall n, SOS (Inter (Pcarre n) (invar_cc n)) (Final (invar_cc n)).
 Proof.
   intros.
@@ -373,6 +384,7 @@ Proof.
   apply SOS_stop.
 Qed.
 
+(* Explication de la démonstration :  *)
 Theorem SOS_Pcarre_2_fin_V2 : SOS (Inter Pcarre_2 [0;0;1]) (Final [2;4;5]).
 Proof.
   eapply SOS_trans.
@@ -385,6 +397,7 @@ Proof.
 Qed.
 
 (** On peut dire des choses sur la version qui boucle. *)
+(* Signification de ce théorème : effectue un tour de programme à l'infini car la condition du while est toujours true. *)
 Lemma SOS_Pcarre_inf_tour :
   forall i,
   SOS (Inter Pcarre_inf (invar_cc i)) (Inter Pcarre_inf (invar_cc (S i))).
@@ -397,6 +410,8 @@ Proof.
   {apply SOS_corps_carre_inter. }
 Qed.
 
+(** Signification de ce théorème : effectue un tour de programme à l'infini car 
+    la condition du while est toujours true. *)
 Theorem SOS_Pcarre_inf_n :
   forall i,
   SOS (Inter Pcarre_inf [0; 0; 1]) (Inter Pcarre_inf (invar_cc i)).
