@@ -1,5 +1,7 @@
 (*   Elias El Yandouzi & Amad Salmon   *)
 
+module File = struct
+  
 type 'a file = 'a list;;
 
 (* val file_vide: ’a file *)
@@ -29,5 +31,4 @@ let defile f =
   defile_aux f []
 ;;
 
-
-  
+end;;
