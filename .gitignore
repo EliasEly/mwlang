@@ -3,5 +3,6 @@
 *.~
 .DS_Store
 main
+obj/
 *.cmo
 *.cmi
