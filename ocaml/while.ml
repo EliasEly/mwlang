@@ -204,18 +204,26 @@ and __if = exp * winstr * winstr
 and sequence = winstr * winstr
 and assign = var * exp;;
 
+(* Définition du type lazy list *)
+type 'a lazylist = unit -> 'a contentsll
+and 'a contentsll = Nil | Cons of 'a * 'a lazylist;;
 
 (* Type pour fonctions qui épluchent une list de terminaux *)
-type 'term analist = 'term list -> 'term list;;
+type 'term analist = 'term lazylist -> 'term lazylist;;
 
 (* Type pour fonctions qui épluchent une list de terminaux et retournent un résultat *)
-type ('r, 'term) ranalist = 'term list -> 'r * 'term list;;
+type ('r, 'term) ranalist = 'term lazylist -> 'r * 'term lazylist;;
 
-type ('x, 't) st = 't list -> 'x
+type ('x, 't) st = 't lazylist -> 'x
+
+let list_of_string s =
+  let rec boucle s i n = fun () ->
+    if i = n then Nil else Cons(s.[i], boucle s (i+1) n)
+in boucle s 0 (String.length s)
 
 let terminal (c : 'a) : 'a analist = fun l -> 
-  match l with
-  | x::l when x = c -> l
+  match l () with
+  | Cons(x, l) when x = c -> l
   | _ -> raise Erreur;;
 
 let (+>) (a: 't analist) (b: ('x, 't) st) : ( 'x, 't) st = 
@@ -246,12 +254,6 @@ let term_1 : (const, char) ranalist  = terminal '1' +> return Un;;
 
 (**Terminal pour la négation d'une variable *)
 let term_neg : (const, char) ranalist  = terminal '#' +> return Opposite;;
-
-(** Terminal pour le while et le if *)
-(** À faire au fil de l'eau pour pouvoir remplir le constructeur, voir p_S 
-  let term_w : (winstr, char) ranalist  = terminal 'w' +> return While;;
-  let term_if : (winstr, char) ranalist  = terminal 'i' +> return If;;
-*)
 
 (**Terminal pour les paranthèses et les acccolades *)
 let term_pg : char analist = terminal '(';;
@@ -303,14 +305,13 @@ let p_Affectation : (winstr, char) ranalist =
   ) l;;
 
 
-
 let rec p_S : (winstr, char) ranalist = 
   let p_L l = ((term_eol +> p_Blanc +> p_S ++> fun a -> return a) +| (epsilon +> return Vide)) l
   and p_I l =  (p_Affectation 
-                +| (term_w +> p_Blanc
+                +| (terminal 'w' +> p_Blanc
                   +> term_pg +> p_Blanc +> p_Expression ++> fun a -> p_Blanc +> term_pd +> p_Blanc
                   +> term_ag +> p_Blanc +> p_S ++> fun b -> p_Blanc +> term_ad +> return (While (a, b))) 
-                +| (term_if +> p_Blanc
+                +| (terminal 'i' +> p_Blanc
                   +> 
                   term_pg +> p_Blanc +> p_Expression ++> fun a -> p_Blanc +> term_pd +> p_Blanc 
                   +> 
@@ -409,9 +410,31 @@ let rec faire_un_pas = fun instr s ->
 
 let rec executer = fun instr s ->
   match (faire_un_pas instr s) with
-  | Final(s) -> (true, s, instr)
+  | Final(s) -> true
   | Inter(i1, s1) -> executer i1 s1;;
 
-let instr = let (i, _) = p_S t2 in i;; 
+open Printf;;
+
+let print_state = fun s ->
+  let rec __print_state (s: int list)  = 
+    match s with
+    | x::l -> printf " %d" x; if l != [] then printf " ;" else printf " " ; __print_state l
+    | [] -> ()
+    in printf "["; __print_state s; printf "]";;
+
+let rec executer_interactif = fun instr s ->
+  printf "> ";
+  let input = read_line() in match input with
+                             | "n" | "next"  -> (match (faire_un_pas instr s) with
+                                          | Final(s) -> true
+                                          | Inter(i1, s1) -> executer_interactif i1 s1)
+                             | "q" | "quit"  -> false
+                             | "p" | "print" -> printf "L'état s vaut : "; print_state s; printf "\n" ;executer_interactif instr s
+                             | "c" | "continue" -> executer instr s
+                             | _ -> executer_interactif instr s;;
+
+let t3 = list_of_string "  a:=1;c:=1;i(0){b:=1}{c:=0}";; 
+let instr = let (i, _) = p_S t3 in i;; 
 let _ = faire_un_pas instr (init 4);;
+let _ = executer_interactif instr (init 4);;
 let _ = executer instr (init 4);;
