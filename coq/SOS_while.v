@@ -481,6 +481,12 @@ Proof.
   - cbn. apply SOS_While.  
 Qed.
 
+(** Définitions d'instructions qui serviront à la preuve suivante **)
+Definition i1 := (If (Bnot (Beqnat Ir (Aco 2))) (Seq corps_carre (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)) Skip).
+Definition i2 := (Seq corps_carre (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)).
+Definition i3 := (Seq (Seq incrX incrY) (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)).
+Definition i4 := (Seq incrY (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)).
+
 (** Démonstration de SOS_Pcarre_2_1er_tour cette fois-ci avec la version 
     fonction fonctionnelle de SOS_1. 
     Nous avons donc remplacé tous les :
@@ -493,13 +499,13 @@ Lemma f_SOS_Pcarre_2_1er_tour : SOS (Inter Pcarre_2 [0;0;1]) (Inter Pcarre_2 [1;
 Proof.
   apply SOS_again with (f_SOS_1 Pcarre_2 [0;0;1]).
   { apply SOS_While. }
-  apply SOS_again with (f_SOS_1 (If (Bnot (Beqnat Ir (Aco 2))) (Seq corps_carre (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)) Skip) [0;0;1]).
+  apply SOS_again with (f_SOS_1 i1 [0;0;1]).
   - apply SOS_If_true. reflexivity.
-  - apply SOS_again with (f_SOS_1 (Seq corps_carre (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)) [0;0;1]).
+  - apply SOS_again with (f_SOS_1 i2 [0;0;1]).
       * apply SOS_Seqi. cbv. apply SOS_Seqf. apply SOS_Assign.
-      * apply SOS_again with (f_SOS_1 (Seq (Seq incrX incrY) (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)) [1;0;1]).
+      * apply SOS_again with (f_SOS_1 i3 [1;0;1]).
         -- cbn. apply SOS_Seqi. apply SOS_Seqf. apply SOS_Assign.
-        -- apply SOS_again with (f_SOS_1 (Seq incrY (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)) [1;1;1]).
+        -- apply SOS_again with (f_SOS_1 i4 [1;1;1]).
           ++ apply SOS_Seqf. eapply SOS_Assign.
           ++ cbn. apply SOS_stop.  
 Qed.
