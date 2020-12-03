@@ -371,7 +371,9 @@ Proof.
 Qed.
 
 (** Facile *)
-(** Signification de ce théorème :  **)
+(** Signification de ce théorème : preuve qu'en partant d'un état intermédiaire 
+    invar_cc n, 'Pcarre n' s'exécute et mène à un état final invar_cc n. 
+    **)
 Theorem SOS_Pcarre_n_fini : forall n, SOS (Inter (Pcarre n) (invar_cc n)) (Final (invar_cc n)).
 Proof.
   intros.
