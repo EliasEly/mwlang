@@ -250,8 +250,10 @@ Proof.
         + apply sos23. apply sos2.
 Qed.
 
-(** Il n'est pas demandé de faire celui-ci
-    (bien qu'un copié-collé d'un lemme précédent fonctionne). *)
+(** Il n'est pas demandé de faire celui-ci (bien qu'un copié-collé d'un lemme précédent fonctionne). *)
+(* Signification de ce théorème : preuve qu'en partant de l'état intermédiaire [1; 1; 3] (état de sortie du premier tour),
+      Pcarre_2 s'exécute et mène à un état intermédiaire [2; 4; 5]. 
+*)
 Lemma SOS_Pcarre_2_2e_tour : SOS (Inter Pcarre_2 [1; 1; 3]) (Inter Pcarre_2 [2; 4; 5]).
 Proof.
   eapply SOS_again. cbv.
