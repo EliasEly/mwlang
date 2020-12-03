@@ -4,7 +4,6 @@
 
 (* On importe les bibliothèques de Coq utiles pour le TD   *)
 
-Require Extraction.
 Require Import Bool Arith List.
 Import List.ListNotations.
 
