@@ -356,8 +356,10 @@ Proof.
     - cbn. apply IHn.
 Qed.
 
-(** Réutiliser les lemmes précédents (facile). *)
-(** Signification de ce théorème :  **)
+(** Signification de ce théorème : preuve qu'en partant d'un état intermédiaire 
+    invar_cc n, 'Pcarre n' s'exécute et mène à un état intermédiaire invar_cc n,
+    permettant au programme de continuer ses tours. 
+    **)
 Lemma SOS_Pcarre_tour :
   forall n i, eqnatb i n = false ->
   SOS (Inter (Pcarre n) (invar_cc i)) (Inter (Pcarre n) (invar_cc (S i))).
