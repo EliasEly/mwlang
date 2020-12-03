@@ -1,36 +1,35 @@
-module Config:
-sig
-  type state
+open While;;
 
-  type config
+type state
 
-  val init : state 
+type config
 
-  val aux : state
+val init : state 
 
-  val get : int 
+val aux : state
 
-  val update : state   
+val get : int 
 
-  val index_var : int
+val update : state   
 
-  val value_exp : exp -> state -> int
+val index_var : int
 
-  val eval : exp -> state -> bool
+val value_exp : exp -> state -> int
 
-  val faire_un_pas : winstr
+val eval : exp -> state -> bool
 
-  val executer : bool
+val faire_un_pas : winstr
 
-  val nombre_de_pas : int
+val executer : bool
 
-  val __nombre_de_pas : int
+val nombre_de_pas : int
 
-  val print_state : state 
+val __nombre_de_pas : int
 
-  val __print_state : state
+val print_state : state 
 
-  val executer_interactif : bool
+val __print_state : state
 
-end;;
+val executer_interactif : bool
+
 
