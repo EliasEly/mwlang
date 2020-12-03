@@ -481,6 +481,21 @@ Proof.
   - cbn. apply SOS_While.  
 Qed.
 
+Lemma f_SOS_Pcarre_2_1er_tour : SOS (Inter Pcarre_2 [0;0;1]) (Inter Pcarre_2 [1; 1; 3]).
+Proof.
+  apply SOS_again with (f_SOS_1 Pcarre_2 [0;0;1]).
+  { apply SOS_While. }
+  apply SOS_again with (f_SOS_1 (If (Bnot (Beqnat Ir (Aco 2))) (Seq corps_carre (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)) Skip) [0;0;1]).
+  - apply SOS_If_true. reflexivity.
+  - apply SOS_again with (f_SOS_1 (Seq corps_carre (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)) [0;0;1]).
+      * apply SOS_Seqi. cbv. apply SOS_Seqf. apply SOS_Assign.
+      * apply SOS_again with (f_SOS_1 (Seq (Seq incrX incrY) (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)) [1;0;1]).
+        -- cbn. apply SOS_Seqi. apply SOS_Seqf. apply SOS_Assign.
+        -- apply SOS_again with (f_SOS_1 (Seq incrY (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)) [1;1;1]).
+          ++ apply SOS_Seqf. eapply SOS_Assign.
+          ++ cbn. apply SOS_stop.  
+Qed.
+
 (** Court. Attention : utiliser la tactique injection. *)
 Lemma f_SOS_1_compl : forall i s c, SOS_1 i s c -> c = f_SOS_1 i s.
 Proof.
