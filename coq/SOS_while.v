@@ -397,7 +397,12 @@ Proof.
 Qed.
 
 (** On peut dire des choses sur la version qui boucle. *)
-(* Signification de ce théorème : effectue un tour de programme à l'infini car la condition du while est toujours true. *)
+(** Signification de ce théorème : preuve que Pcarre_inf fait tourner le 
+    programme à l'infini à cause de la condition du While qui est toujours à 
+    true. 
+    En effet, on prouve qu'en partant d'un état intermédiaire invar_cc i, 
+    Pcarre_inf nous fait revenir à un état intermédiaire invar_cc (S i).
+    **)
 Lemma SOS_Pcarre_inf_tour :
   forall i,
   SOS (Inter Pcarre_inf (invar_cc i)) (Inter Pcarre_inf (invar_cc (S i))).
