@@ -303,6 +303,9 @@ Lemma Sn_carre n : S n * S n = S (n + n + n * n).
 Proof. ring. Qed.
 
 Definition invar_cc n := [n; n*n; S (n+n)].
+(* Signification de ce théorème : preuve qu'en parrtant d'un état intérmédiaire de type invar_cc, 
+    corps_carre s'exécute et calcule le carré grâce aux additions en fonction de la valeur 
+    de n (0 ou un entier non-nul), et mène à un état final de type invar_cc.*)
 Theorem SOS_corps_carre n : SOS (Inter corps_carre (invar_cc n)) (Final (invar_cc (S n))).
 Proof.
   induction n as [].
