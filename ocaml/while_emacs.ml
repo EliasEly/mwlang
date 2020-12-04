@@ -235,17 +235,61 @@ let rec executer_interactif = fun instr s ->
                               | _ -> executer_interactif instr s
 ;;
 
-                              
+(*  ***********  EXERCICE 7 : Test de l'analyseur syntaxique  *********** *)
+
+(* 
+  Test de l'instruction While avec le programme suivant :
+      a:=1;
+      b:=1;
+      while (a) {
+        b:=1
+      }   
+*)
 let t2 = list_of_string "a:=1;b:=1;w(a){b:=1}";;
 let _ = p_S t2;;
 
-let t3 = list_of_string "  a:=1;b:=1;i(1){b:=1}{c:=0}";;
+(* 
+  Test de l'instruction If avec le programme suivant :
+      a:=1;
+      b:=1;
+      if (1) {
+        b:=1
+      } else {
+        c:=0
+      }   
+*)
+let t3 = list_of_string "a:=1;b:=1;i(1){b:=1}{c:=0}";;
 let _ = p_S t3;;
 
-let t4 = list_of_string "  a:=1;b:=1;a:=#;i(1){b:=1}{c:=0}";;
+(* 
+  Test de l'instruction If avec le programme suivant :
+      a:=1;
+      b:=1;
+      a:=#;
+      if (1) {
+        b:=1
+      } else {
+        c:=0
+      }   
+*)
+let t4 = list_of_string "a:=1;b:=1;a:=#;i(1){b:=1}{c:=0}";;
 let _ = p_S t4;;
 
-let t5 = list_of_string "  a:=1;c:=1;i(0){b:=1}{c:=0}";; 
+(* 
+  Test de l'instruction If avec le programme suivant :
+      a:=1;
+      b:=1;
+      if (0) {
+        b:=1
+      } else {
+        c:=0
+      }   
+*)
+let t5 = list_of_string "a:=1;c:=1;i(0){b:=1}{c:=0}";; 
+
+
+(*  ***********  EXERCICE 11  : Intérpréteur SOS pas à pas  *********** *)
+
 let instr = let (i, _) = p_S t3 in i;; 
 let _ = faire_un_pas instr (init 4);;
 let _ = executer instr (init 4);;
