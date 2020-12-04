@@ -389,7 +389,17 @@ Proof.
   apply SOS_stop.
 Qed.
 
-(** Explication de la démonstration :  **)
+(** Explication de la démonstration :  
+    Notre but est d'arriver à l'état final [2;4;5] en partant de l'état [0;0;1].
+
+    Or, SOS_trans nous permet de partir de l'état [0;0;1] pour arriver à un état c2, 
+    avant de repartir de cet état c2 pour arriver à l'état [2;4;5].
+
+    Nous découpons donc les configurations à chaque étape afin d'arriver à notre but :
+      * 1) On part de l'état [0;0;1] pour arriver à l'état [1;1;3].
+      * 1) De cet état [1;1;3] on obtient l'état [2;4;5] intermédiaire.
+      * 1) Enfin, en partant de l'état [2;4;5] intermédiaire on arrive à l'état [2;4;5] final.
+**)
 Theorem SOS_Pcarre_2_fin_V2 : SOS (Inter Pcarre_2 [0;0;1]) (Final [2;4;5]).
 Proof.
   eapply SOS_trans.
