@@ -307,10 +307,10 @@ Proof. ring. Qed.
 
 Definition invar_cc n := [n; n*n; S (n+n)].
 
-(** Signification de ce théorème : preuve qu'en parrtant d'un état intérmédiaire
-    de type invar_cc, corps_carre s'exécute et calcule le carré grâce aux 
+(** Signification de ce théorème : preuve qu'en partant d'un état intermédiaire
+    de type invar_cc n, corps_carre s'exécute et calcule le carré grâce aux 
     additions en fonction de la valeur de n (0 ou un entier non-nul), et mène à 
-    un état final de type invar_cc. 
+    un état final de type invar_cc (n+1). 
     **)
 Theorem SOS_corps_carre n : SOS (Inter corps_carre (invar_cc n)) (Final (invar_cc (S n))).
 Proof.
