@@ -14,8 +14,8 @@ Les règles de transition de If sont donc :
 
 let assert_ps = fun ps -> 
     let (ast, tab) = ps in 
-      match tab with
-      | nil -> true
+      match tab () with
+      | Nil -> true
       | _ -> false
     ;;
 
