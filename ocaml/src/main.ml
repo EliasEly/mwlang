@@ -44,13 +44,17 @@ printf("\n    list_of_string \"a:=1;b:=1;a:=#;i(1){b:=1}{c:=0}\"");;
 printf("\n    Retourne un AST plein et un tableau vide ? ");;
 let assert3 = assert_ps (p_S t3) in print_bool assert3;;
 
+let t4 = list_of_string
 "a:=1;
 c:=1;
 i(0)
   {b:=1}
   {c:=0}";; 
-                          
-let instr = let (i, _) = p_S t3 in i;; 
+printf("\n--> Test de l'instruction If avec une expression correctement indentée");;
+printf("\n    list_of_string \"\n    a:=1;\n    c:=1;\n    i(0)\n      {b:=1}\n      {c:=0}\"");;
+printf("\n    Retourne un AST plein et un tableau vide ? ");;
+let assert4 = assert_ps (p_S t4) in print_bool assert4;;
+
 
 let _ = faire_un_pas instr (init 4);;
 let _ = executer instr (init 4);;
