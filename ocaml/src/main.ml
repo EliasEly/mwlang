@@ -38,6 +38,12 @@ printf("\n    list_of_string \"a:=1;b:=1;i(1){b:=1}{c:=0}\"");;
 printf("\n    Retourne un AST plein et un tableau vide ? ");;
 let assert2 = assert_ps (p_S t2) in print_bool assert2;;
 
+let t3 = list_of_string "  a:=1;b:=1;a:=#;i(1){b:=1}{c:=0}";;
+printf("\n--> Test de #");;
+printf("\n    list_of_string \"a:=1;b:=1;a:=#;i(1){b:=1}{c:=0}\"");;
+printf("\n    Retourne un AST plein et un tableau vide ? ");;
+let assert3 = assert_ps (p_S t3) in print_bool assert3;;
+
 "a:=1;
 c:=1;
 i(0)
