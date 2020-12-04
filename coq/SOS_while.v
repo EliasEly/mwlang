@@ -361,7 +361,8 @@ Qed.
 (** Signification de ce théorème : preuve qu'en partant d'un état intermédiaire 
     invar_cc i, 'Pcarre n' s'exécute et mène à un état intermédiaire invar_cc (i+1),
     permettant au programme de continuer ses tours. 
-    Cette incrémentation de i est bien le résultat d'un tour.
+    Cette incrémentation de i est bien le résultat d'un tour lorsque n et i sont différents.
+    La condition `eqnatb i n = false` assure que le programme boucle tant que i n'est pas égal à n.
     **)
 Lemma SOS_Pcarre_tour :
   forall n i, eqnatb i n = false ->
