@@ -29,19 +29,19 @@ printf("\n  ************  EXERCICE 7 : Test de l'analyseur  ************  \n")
 let t1 = list_of_string "a:=1;b:=1;w(a){b:=1}";;
 printf("\n--> Test de l'instruction While");;
 printf("\n    list_of_string \"a:=1;b:=1;w(a){b:=1}\"");;
-printf("\n    Retourne un AST plein et un tableau vide ? ");;
+printf("\n    Analyse syntaxique correcte ? ");;
 let assert1 = assert_ps (p_S t1) in print_bool assert1;;
 
 let t2 = list_of_string "  a:=1;b:=1;i(1){b:=1}{c:=0}";;
 printf("\n--> Test de l'instruction If");;
 printf("\n    list_of_string \"a:=1;b:=1;i(1){b:=1}{c:=0}\"");;
-printf("\n    Retourne un AST plein et un tableau vide ? ");;
+printf("\n    Analyse syntaxique correcte ? ");;
 let assert2 = assert_ps (p_S t2) in print_bool assert2;;
 
 let t3 = list_of_string "  a:=1;b:=1;a:=#;i(1){b:=1}{c:=0}";;
 printf("\n--> Test de #");;
 printf("\n    list_of_string \"a:=1;b:=1;a:=#;i(1){b:=1}{c:=0}\"");;
-printf("\n    Retourne un AST plein et un tableau vide ? ");;
+printf("\n    Analyse syntaxique correcte ? ");;
 let assert3 = assert_ps (p_S t3) in print_bool assert3;;
 
 let t4 = list_of_string
@@ -52,7 +52,7 @@ i(0)
   {c:=0}";; 
 printf("\n--> Test de l'instruction If avec blancs arbitraires");;
 printf("\n    list_of_string \"\n    a:=1;\n    c:=1;\n    i(0)\n      {b:=1}\n      {c:=0}\"");;
-printf("\n    Retourne un AST plein et un tableau vide ? ");;
+printf("\n    Analyse syntaxique correcte ? ");;
 let assert4 = assert_ps (p_S t4) in print_bool assert4;;
 
 
