@@ -50,7 +50,7 @@ c:=1;
 i(0)
   {b:=1}
   {c:=0}";; 
-printf("\n--> Test de l'instruction If avec une expression correctement indentée");;
+printf("\n--> Test de l'instruction If avec blancs arbitraires");;
 printf("\n    list_of_string \"\n    a:=1;\n    c:=1;\n    i(0)\n      {b:=1}\n      {c:=0}\"");;
 printf("\n    Retourne un AST plein et un tableau vide ? ");;
 let assert4 = assert_ps (p_S t4) in print_bool assert4;;
