@@ -14,7 +14,7 @@ L'intégralité des questions de la partie principale de OCaml se trouve dans le
 Les extensions LazyList et Interpreteur ont été traitées.  
 Il y a deux fois le même programme, dans le fichier `while_emacs.ml` et dans les dossiers `src` et `include`.
 
-- Le fichier `while_emacs.ml` permett une exécution via l'interpréteur dans `emacs`.
+- Le fichier `while_emacs.ml` permet une exécution via l'interpréteur dans `emacs`.
 - Les fichiers dans `src` et `include` permettent de générer un exécutable `main` via la commande `make`.
 
 ### Compilation & exécution
