@@ -443,6 +443,18 @@ Qed.
 
 (** Énoncer et démontrer le théorème général pour Pcarre *)
 
+Theorem SOS_Pcarre_n :
+  forall n,
+  SOS (Inter (Pcarre 0) (invar_cc 0)) (Final (invar_cc n)).
+Proof.
+    intros.
+    induction n as [].
+    - apply SOS_Pcarre_n_fini.
+    - eapply SOS_trans.
+      * eapply IHn.
+      * apply SOS_Pcarre_tour.
+Admitted.
+
 (* ================================================================================ *)
 
 
@@ -494,6 +506,7 @@ Proof.
           ++ apply SOS_Seqf. eapply SOS_Assign.
           ++ cbn. apply SOS_stop.  
 Qed.
+
 
 (** Court mais non trivial. *)
 Lemma f_SOS_1_corr : forall i s, SOS_1 i s (f_SOS_1 i s).
