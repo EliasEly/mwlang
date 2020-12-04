@@ -1,4 +1,5 @@
 (*Auteur : Elias El Yandouzi & Amad Salmon*)
+open Printf;;
 open While;;
 
 type state = int list;;
@@ -76,9 +77,6 @@ let rec executer = fun instr s ->
   | Final(s) -> true
   | Inter(i1, s1) -> executer i1 s1;;
 
-
-(*  *)
-open Printf;;
 
 let nombre_de_pas = fun instr ->
   let rec __nombre_de_pas = fun instr s acc ->
