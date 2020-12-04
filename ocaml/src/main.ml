@@ -56,6 +56,17 @@ printf("\n    Retourne un AST plein et un tableau vide ? ");;
 let assert4 = assert_ps (p_S t4) in print_bool assert4;;
 
 
+printf("\n\n  ************  EXERCICE 11  : Intérpréteur SOS pas à pas  ************  \n")
+
+let instr = let (i, _) = p_S t4 in i;; 
 let _ = faire_un_pas instr (init 4);;
 let _ = executer instr (init 4);;
+
+printf("\n--> Test de l'exécution interactive :\n");;
+printf("\n    Liste des différentes commande exécutables :");;
+printf("\n      | 'n' ou 'next' : faire un pas.");;
+printf("\n      | 'q' ou 'quit' : quitte l'exécution du programme.");;
+printf("\n      | 'p' ou 'print' : affiche la valeur de l'état courant.");;
+printf("\n      | 'c' ou 'continue' : continuer l'exécution du programme.");;
+printf("\n");;
 let _ = executer_interactif instr (init 4);;
