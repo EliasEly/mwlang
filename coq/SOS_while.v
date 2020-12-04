@@ -454,6 +454,14 @@ Proof.
     * apply SOS_Pcarre_inf_tour.
 Qed.
 
+Lemma eqnatb_i_Sk_false i k:
+  eqnatb i (i + S k) = false.
+  Proof.
+    induction i as [].
+    - cbn. reflexivity.
+    - cbn. apply IHi.
+  Qed.
+
 (** Énoncer et démontrer le théorème général pour Pcarre *)
 Fixpoint FP_SOS_Pcarre i k {struct k} : 
 SOS (Inter (Pcarre (i + k)) (invar_cc i)) (Inter (Pcarre (i + k)) (invar_cc (i + k))).
@@ -462,17 +470,20 @@ SOS (Inter (Pcarre (i + k)) (invar_cc i)) (Inter (Pcarre (i + k)) (invar_cc (i +
   | S k' => _
   end).
   - rewrite plus_0_r. apply SOS_stop.
-  - eapply SOS_trans. 
-    * apply SOS_Pcarre_tour.
+  - eapply SOS_trans.
+    * apply SOS_Pcarre_tour. apply eqnatb_i_Sk_false.
+    *
 Admitted.
 
 Theorem SOS_Pcarre_n :
   forall n,
-  SOS (Inter (Pcarre 0) (invar_cc 0)) (Final (invar_cc n)).
+  SOS (Inter (Pcarre n) (invar_cc 0)) (Final (invar_cc n)).
 Proof.
     intros.
-    apply (FP_SOS_Pcarre 0 n).
-Admitted.
+    apply SOS_trans with (Inter (Pcarre n) (invar_cc n)).
+      - apply (FP_SOS_Pcarre 0 n).
+      - apply SOS_Pcarre_n_fini. 
+Qed.
 
 (* ================================================================================ *)
 
@@ -549,12 +560,15 @@ Qed.
 Lemma f_SOS_1_compl : forall i s c, SOS_1 i s c -> c = f_SOS_1 i s.
 Proof.
   intros i s c hyp.
-  pose (inj := fun c =>
-                  match c with
-                  | Inter _ _ => false
-                  | _ => true
-                  end).
-Admitted.
+  induction hyp as [].
+  - reflexivity.
+  - reflexivity.
+  - cbn. rewrite <- IHhyp. reflexivity.
+  - cbn. rewrite <- IHhyp. reflexivity.
+  - cbn. rewrite H. reflexivity.
+  - cbn. rewrite H. reflexivity.
+  - cbn. reflexivity.
+Qed.
 
 
 
