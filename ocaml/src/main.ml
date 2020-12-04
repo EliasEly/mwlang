@@ -32,7 +32,12 @@ printf("\n    list_of_string \"a:=1;b:=1;w(a){b:=1}\"");;
 printf("\n    Retourne un AST plein et un tableau vide ? ");;
 let assert1 = assert_ps (p_S t1) in print_bool assert1;;
 
-let t3 = list_of_string
+let t2 = list_of_string "  a:=1;b:=1;i(1){b:=1}{c:=0}";;
+printf("\n--> Test de l'instruction If");;
+printf("\n    list_of_string \"a:=1;b:=1;i(1){b:=1}{c:=0}\"");;
+printf("\n    Retourne un AST plein et un tableau vide ? ");;
+let assert2 = assert_ps (p_S t2) in print_bool assert2;;
+
 "a:=1;
 c:=1;
 i(0)
