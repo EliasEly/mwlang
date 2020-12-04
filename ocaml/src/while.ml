@@ -1,4 +1,4 @@
-(*Auteur : Elias El Yandouzi & Amad Salmon*)
+(*Auteurs : Elias El Yandouzi & Amad Salmon*)
 
 (* Début de l'analyse syntaxique avec AST *)  
 exception Erreur

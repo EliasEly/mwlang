@@ -1,3 +1,4 @@
+(* Auteurs  : Elias El Yandouzi & Amad Salmon*)
 (* TD9 - Sémantique petit pas                *)
 (* Structural Operational Semantics (SOS)    *)
 
