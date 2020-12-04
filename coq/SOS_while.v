@@ -425,7 +425,7 @@ Qed.
     programme à l'infini à cause de la condition du While qui est toujours à 
     true. 
     En effet, on prouve qu'en partant d'un état intermédiaire invar_cc i, 
-    Pcarre_inf nous fait revenir à un état intermédiaire invar_cc (S i).
+    Pcarre_inf nous fait aller à un état intermédiaire invar_cc (S i).
     **)
 Lemma SOS_Pcarre_inf_tour :
   forall i,
