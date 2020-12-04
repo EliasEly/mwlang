@@ -455,23 +455,29 @@ Proof.
 Qed.
 
 (** Énoncer et démontrer le théorème général pour Pcarre *)
+Fixpoint FP_SOS_Pcarre i k {struct k} : 
+SOS (Inter (Pcarre (i + k)) (invar_cc i)) (Inter (Pcarre (i + k)) (invar_cc (i + k))).
+  refine ( match k with
+  | 0 => _
+  | S k' => _
+  end).
+  - rewrite plus_0_r. apply SOS_stop.
+  - eapply SOS_trans. 
+    * apply SOS_Pcarre_tour.
+Admitted.
 
 Theorem SOS_Pcarre_n :
   forall n,
   SOS (Inter (Pcarre 0) (invar_cc 0)) (Final (invar_cc n)).
 Proof.
     intros.
-    induction n as [].
-    - apply SOS_Pcarre_n_fini.
-    - eapply SOS_trans.
-      * eapply IHn.
-      * apply SOS_Pcarre_tour.
+    apply (FP_SOS_Pcarre 0 n).
 Admitted.
 
 (* ================================================================================ *)
 
 
-(** * II *)
+(* II *)
 
 
 (** Définir une version fonctionnelle de SOS_1 *)
@@ -490,6 +496,8 @@ Fixpoint f_SOS_1 (i : Winstr) (s : state) : config :=
   | While b i => Inter (If b (Seq i (While b i)) Skip) s
   end.
 
+
+(** Exercice 15 - f_SOS_1 oracle **)  
 
 (** Définitions d'instructions qui serviront à la preuve suivante **)
 Definition i1 := (If (Bnot (Beqnat Ir (Aco 2))) (Seq corps_carre (While (Bnot (Beqnat Ir (Aco 2))) corps_carre)) Skip).
@@ -540,8 +548,12 @@ Qed.
 (** Court. Attention : utiliser la tactique injection. *)
 Lemma f_SOS_1_compl : forall i s c, SOS_1 i s c -> c = f_SOS_1 i s.
 Proof.
-  intros i s.
-  induction i as [].
+  intros i s c hyp.
+  pose (inj := fun c =>
+                  match c with
+                  | Inter _ _ => false
+                  | _ => true
+                  end).
 Admitted.
 
 
