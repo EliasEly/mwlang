@@ -340,8 +340,10 @@ Proof.
 Admitted.
 
 (** Réutiliser les lemmes précédents (facile et très court). *)
-(** Signification de ce théorème :  preuve qu'en partant d'un état intérmédiaire 
-    de type invar_cc, *)
+(** Signification de ce théorème : preuve qu'en partant d'un état intérmédiaire 
+    de type invar_cc n, Seq s'exécute afin d'arriver à un autre état intermédiaire
+    invar_cc (n+1). Cette incrémentation de n est bien le résultat d'un tour.
+    **)
 Lemma SOS_corps_carre_inter n i :
   SOS (Inter (Seq corps_carre i) (invar_cc n)) (Inter i (invar_cc (S n))).
 Proof.
@@ -357,8 +359,9 @@ Proof.
 Qed.
 
 (** Signification de ce théorème : preuve qu'en partant d'un état intermédiaire 
-    invar_cc n, 'Pcarre n' s'exécute et mène à un état intermédiaire invar_cc n,
+    invar_cc i, 'Pcarre n' s'exécute et mène à un état intermédiaire invar_cc (i+1),
     permettant au programme de continuer ses tours. 
+    Cette incrémentation de i est bien le résultat d'un tour.
     **)
 Lemma SOS_Pcarre_tour :
   forall n i, eqnatb i n = false ->
@@ -389,7 +392,17 @@ Proof.
   apply SOS_stop.
 Qed.
 
-(** Explication de la démonstration :  **)
+(** Explication de la démonstration :  
+    Notre but est d'arriver à l'état final [2;4;5] en partant de l'état [0;0;1].
+
+    Or, SOS_trans nous permet de partir de l'état [0;0;1] pour arriver à un état c2, 
+    avant de repartir de cet état c2 pour arriver à l'état [2;4;5].
+
+    Nous découpons donc les configurations à chaque étape afin d'arriver à notre but :
+      * 1) On part de l'état [0;0;1] pour arriver à l'état [1;1;3].
+      * 1) De cet état [1;1;3] on obtient l'état [2;4;5] intermédiaire.
+      * 1) Enfin, en partant de l'état [2;4;5] intermédiaire on arrive à l'état [2;4;5] final.
+**)
 Theorem SOS_Pcarre_2_fin_V2 : SOS (Inter Pcarre_2 [0;0;1]) (Final [2;4;5]).
 Proof.
   eapply SOS_trans.
