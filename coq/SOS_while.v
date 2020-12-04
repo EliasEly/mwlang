@@ -340,8 +340,10 @@ Proof.
 Admitted.
 
 (** Réutiliser les lemmes précédents (facile et très court). *)
-(** Signification de ce théorème :  preuve qu'en partant d'un état intérmédiaire 
-    de type invar_cc, *)
+(** Signification de ce théorème : preuve qu'en partant d'un état intérmédiaire 
+    de type invar_cc n, Seq s'exécute afin d'arriver à un autre état intermédiaire
+    invar_cc (n+1). Cette incrémentation de n est bien le résultat d'un tour.
+    **)
 Lemma SOS_corps_carre_inter n i :
   SOS (Inter (Seq corps_carre i) (invar_cc n)) (Inter i (invar_cc (S n))).
 Proof.
