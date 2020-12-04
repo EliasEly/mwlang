@@ -12,6 +12,7 @@ Les règles de transition de If sont donc :
     E, ((if bexp) then P else Q) -> E, Q
 **)
 
+(** Fonctions outils servant aux tests ci-après **)
 let assert_ps = fun ps -> 
     let (ast, tab) = ps in 
       match tab () with
