@@ -14,3 +14,6 @@ Il y a deux fois le même programme, dans le fichier while_emacs.ml et dans les 
 
 - Le fichier while_emacs.ml permettent une execution via l'interpreteur dans emacs.
 - Les fichiers dans src et include permettent de générer un executable main via la commande make.
+
+        > make
+        > ./main

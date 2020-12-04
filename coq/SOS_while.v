@@ -307,7 +307,7 @@ Proof. ring. Qed.
 
 Definition invar_cc n := [n; n*n; S (n+n)].
 
-(** Signification de ce théorème : preuve qu'en parrtant d'un état intérmédiaire
+(** Signification de ce théorème : preuve qu'en partant d'un état intérmédiaire
     de type invar_cc, corps_carre s'exécute et calcule le carré grâce aux 
     additions en fonction de la valeur de n (0 ou un entier non-nul), et mène à 
     un état final de type invar_cc. 
@@ -333,7 +333,12 @@ Proof.
 Qed.
 
 (** Celui-ci est court mais difficile. Laisser Admitted au début. *)
-(* Signification de ce théorème :  *)
+(** Signification de ce théorème : Pour une séquence avec une seule instruction i1
+  qui s'execute sur s1 et tombe sur une config final, rajouter une instruction 
+  i2 donnera une configuration où i2 s'excutera sur 
+  l'état de sortie de (Inter i1 s1) soit s2 
+  En d'autres termes, si la séquence so retourne une config final, rajouter i2
+  donnera une config (inter i2 s2) **)
 Fixpoint SOS_seq i1 i2 s1 s2 (so : SOS (Inter i1 s1) (Final s2)) :
   SOS (Inter (Seq i1 i2) s1) (Inter i2 s2).
 Proof.
@@ -454,6 +459,7 @@ Proof.
     * apply SOS_Pcarre_inf_tour.
 Qed.
 
+(** Énoncer et démontrer le théorème général pour Pcarre *)
 Lemma eqnatb_i_Sk_false i k:
   eqnatb i (i + S k) = false.
   Proof.
@@ -462,7 +468,6 @@ Lemma eqnatb_i_Sk_false i k:
     - cbn. apply IHi.
   Qed.
 
-(** Énoncer et démontrer le théorème général pour Pcarre *)
 Fixpoint FP_SOS_Pcarre i k {struct k} : 
 SOS (Inter (Pcarre (i + k)) (invar_cc i)) (Inter (Pcarre (i + k)) (invar_cc (i + k))).
   refine ( match k with
