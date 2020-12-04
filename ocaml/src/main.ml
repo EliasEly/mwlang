@@ -12,11 +12,17 @@ Les règles de transition de If sont donc :
     E, ((if bexp) then P else Q) -> E, Q
 **)
 
-let t2 = list_of_string "a:=1;b:=1;w(a){b:=1}";;
-let _ = p_S t2;;
+let assert_ps = fun ps -> 
+    let (ast, tab) = ps in 
+      match tab with
+      | nil -> true
+      | _ -> false
+    ;;
 
-let t3 = list_of_string "  a:=1;b:=1;i(1){b:=1}{c:=0}";;
-let _ = p_S t3;;
+let print_bool = fun b -> match b with
+| true ->  printf("  true \n")
+| false -> printf("  false \n")
+;;
 
 let t4 = list_of_string "  a:=1;b:=1;a:=#;i(1){b:=1}{c:=0}";;
 let _ = p_S t4;;
