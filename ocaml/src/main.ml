@@ -24,8 +24,13 @@ let print_bool = fun b -> match b with
 | false -> printf("  false \n")
 ;;
 
-let t4 = list_of_string "  a:=1;b:=1;a:=#;i(1){b:=1}{c:=0}";;
-let _ = p_S t4;;
+(** Exercice 7 **)
+printf("\n  ************  EXERCICE 7 : Test de l'analyseur  ************  \n")
+let t1 = list_of_string "a:=1;b:=1;w(a){b:=1}";;
+printf("\n--> Test de l'instruction While");;
+printf("\n    list_of_string \"a:=1;b:=1;w(a){b:=1}\"");;
+printf("\n    Retourne un AST plein et un tableau vide ? ");;
+let assert1 = assert_ps (p_S t1) in print_bool assert1;;
 
 let t3 = list_of_string
 "a:=1;
