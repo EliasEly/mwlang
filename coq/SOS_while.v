@@ -307,10 +307,10 @@ Proof. ring. Qed.
 
 Definition invar_cc n := [n; n*n; S (n+n)].
 
-(** Signification de ce théorème : preuve qu'en partant d'un état intérmédiaire
-    de type invar_cc, corps_carre s'exécute et calcule le carré grâce aux 
+(** Signification de ce théorème : preuve qu'en partant d'un état intermédiaire
+    de type invar_cc n, corps_carre s'exécute et calcule le carré grâce aux 
     additions en fonction de la valeur de n (0 ou un entier non-nul), et mène à 
-    un état final de type invar_cc. 
+    un état final de type invar_cc (n+1). 
     **)
 Theorem SOS_corps_carre n : SOS (Inter corps_carre (invar_cc n)) (Final (invar_cc (S n))).
 Proof.
@@ -366,7 +366,8 @@ Qed.
 (** Signification de ce théorème : preuve qu'en partant d'un état intermédiaire 
     invar_cc i, 'Pcarre n' s'exécute et mène à un état intermédiaire invar_cc (i+1),
     permettant au programme de continuer ses tours. 
-    Cette incrémentation de i est bien le résultat d'un tour.
+    Cette incrémentation de i est bien le résultat d'un tour lorsque n et i sont différents.
+    La condition `eqnatb i n = false` assure que le programme boucle tant que i n'est pas égal à n.
     **)
 Lemma SOS_Pcarre_tour :
   forall n i, eqnatb i n = false ->
