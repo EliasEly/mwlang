@@ -357,8 +357,9 @@ Proof.
 Qed.
 
 (** Signification de ce théorème : preuve qu'en partant d'un état intermédiaire 
-    invar_cc n, 'Pcarre n' s'exécute et mène à un état intermédiaire invar_cc n,
+    invar_cc i, 'Pcarre n' s'exécute et mène à un état intermédiaire invar_cc (i+1),
     permettant au programme de continuer ses tours. 
+    Cette incrémentation de i est bien le résultat d'un tour.
     **)
 Lemma SOS_Pcarre_tour :
   forall n i, eqnatb i n = false ->
